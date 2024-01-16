@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event'
 import App from './App';
 
@@ -41,11 +41,14 @@ describe('App Component', () => {
     });
   })
 
-  test('should copy the code', ()=> {
+  test('should copy the code', async ()=> {
     const { getByLabelText } = render(<App />);
 
     const code = getByLabelText('Code');
-    userEvent.click(code);
+
+    await act(async () => {
+      userEvent.click(code);
+    });
 
     expect(code).toHaveTextContent('Border-radius: 0% 0% 0% 0%')
     expect(navigator.clipboard.writeText).toHaveBeenCalled();
